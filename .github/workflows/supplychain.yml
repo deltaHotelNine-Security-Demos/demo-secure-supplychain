@@ -56,6 +56,12 @@ jobs:
                   IMAGE_REF="${REGISTRY_GHCR}/${IMAGE_NAME}:${IMAGE_TAG}"
                   echo "Scanning ${IMAGE_REF}"
                   grype "${IMAGE_REF}" -o json > scan-results.json
+            
+            - name: Upload SBOM and Scan Results
+              uses: actions/upload-artifact@v4
+              path: |
+                  sbom.json
+                  scan-results.json
 
             - name: Push to GHCR
               run: |
