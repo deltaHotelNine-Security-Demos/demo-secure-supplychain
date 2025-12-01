@@ -12,7 +12,7 @@ permissions:
 
 env:
     REGISTRY_GHCR: ghcr.io
-  IMAGE_NAME: ${{ toLower(github.repository) }}
+    IMAGE_NAME: ${{ toLower(github.repository) }}
     IMAGE_TAG: ${{ github.sha }}
 
 jobs:
