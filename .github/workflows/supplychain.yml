@@ -59,9 +59,11 @@ jobs:
             
             - name: Upload SBOM and Scan Results
               uses: actions/upload-artifact@v4
-              path: |
-                  sbom.json
-                  scan-results.json
+              with:
+                name: security-artifacts-${{ github.run_id}}
+                path: |
+                    sbom.json
+                    scan-results.json
 
             - name: Push to GHCR
               run: |
