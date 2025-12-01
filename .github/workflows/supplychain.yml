@@ -85,3 +85,7 @@ jobs:
                 IMAGE_REF="${REGISTRY_GHCR}/${IMAGE_NAME}:${IMAGE_TAG}"
                 echo "Signing ${IMAGE_REF} with cosign"
                 cosign sign --key cosign.key "${IMAGE_REF}"
+
+            - name: Workflow Summary
+                run: |
+                  echo "GHCR image: ${REGISTRY_GHCR}/${IMAGE_NAME}:${IMAGE_TAG}" >> $GITHUB_STEP_SUMMARY
