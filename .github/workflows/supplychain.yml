@@ -23,9 +23,9 @@ jobs:
 
             - name: Establish Image Name
               run: |
-                IMAGE_NAME=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
-                echo "Cleaned IMAGE_NAME: $IMAGE_NAME"
-                echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+                  IMAGE_NAME=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
+                  echo "Cleaned IMAGE_NAME: $IMAGE_NAME"
+                  echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
             - name: Login to GHCR
               uses: docker/login-action@v3
@@ -56,14 +56,14 @@ jobs:
                   IMAGE_REF="${REGISTRY_GHCR}/${IMAGE_NAME}:${IMAGE_TAG}"
                   echo "Scanning ${IMAGE_REF}"
                   grype "${IMAGE_REF}" -o json > scan-results.json
-            
+
             - name: Upload SBOM and Scan Results
               uses: actions/upload-artifact@v4
               with:
-                name: security-artifacts-${{ github.run_id}}
-                path: |
-                    sbom.json
-                    scan-results.json
+                  name: security-artifacts-${{ github.run_id}}
+                  path: |
+                      sbom.json
+                      scan-results.json
 
             - name: Push to GHCR
               run: |
@@ -80,12 +80,12 @@ jobs:
 
             - name: Sign GHCR Image with Cosign
               env:
-                COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+                  COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
               run: |
-                IMAGE_REF="${REGISTRY_GHCR}/${IMAGE_NAME}:${IMAGE_TAG}"
-                echo "Signing ${IMAGE_REF} with cosign"
-                cosign sign --key cosign.key "${IMAGE_REF}"
+                  IMAGE_REF="${REGISTRY_GHCR}/${IMAGE_NAME}:${IMAGE_TAG}"
+                  echo "Signing ${IMAGE_REF} with cosign"
+                  cosign sign --key cosign.key "${IMAGE_REF}"
 
             - name: Workflow Summary
-                run: |
+              run: |
                   echo "GHCR image: ${REGISTRY_GHCR}/${IMAGE_NAME}:${IMAGE_TAG}" >> $GITHUB_STEP_SUMMARY
